@@ -1,7 +1,7 @@
 {
   "name": "gobble-concat",
   "description": "Concatenate files with gobble",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Rich Harris",
   "files": [
     "index.js"
@@ -10,7 +10,7 @@
     "gobble"
   ],
   "dependencies": {
-    "gobble": "~0.1.2",
+    "gobble": "~0.2.0",
     "promise-map-series": "~0.2.0",
     "minimatch": "~1.0.0"
   }
