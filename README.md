@@ -31,8 +31,7 @@ module.exports = gobble( 'js' )
   .transform( 'concat', {
     dest: 'bundle.js',
     files: [ 'foo.js', 'bar.js', 'baz.js' ]
-  }
-);
+  });
 ```
 
 The `files` option can be a [minimatch](https://github.com/isaacs/minimatch) pattern:
@@ -43,8 +42,7 @@ module.exports = gobble( 'js' )
   .transform( 'concat', {
     dest: 'bundle.js',
     files: [ 'vendor/**/*.js', 'src/**/*.js' ]
-  }
-);
+  });
 ```
 
 ### `sort`
@@ -63,8 +61,7 @@ module.exports = gobble( 'js' )
   .transform( 'concat', {
     dest: 'bundle.js',
     separator: '/* YOLO */'
-  }
-);
+  });
 ```
 
 
