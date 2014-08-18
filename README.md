@@ -28,7 +28,11 @@ You can specify which files are included, and their order, like so:
 ```js
 var gobble = require( 'gobble' );
 module.exports = gobble( 'js' )
-  .transform( 'concat', { dest: 'bundle.js', files: [ 'foo.js', 'bar.js', 'baz.js' ] });
+  .transform( 'concat', {
+    dest: 'bundle.js',
+    files: [ 'foo.js', 'bar.js', 'baz.js' ]
+  }
+);
 ```
 
 The `files` option can be a [minimatch](https://github.com/isaacs/minimatch) pattern:
@@ -36,7 +40,11 @@ The `files` option can be a [minimatch](https://github.com/isaacs/minimatch) pat
 ```js
 var gobble = require( 'gobble' );
 module.exports = gobble( 'js' )
-  .transform( 'concat', { dest: 'bundle.js', files: [ 'vendor/**/*.js', 'src/**/*.js' ] });
+  .transform( 'concat', {
+    dest: 'bundle.js',
+    files: [ 'vendor/**/*.js', 'src/**/*.js' ]
+  }
+);
 ```
 
 ### `sort`
@@ -52,7 +60,11 @@ By default, files will be separated by newlines. You can change this to be any s
 ```js
 var gobble = require( 'gobble' );
 module.exports = gobble( 'js' )
-  .transform( 'concat', { dest: 'bundle.js', separator: '/* YOLO */' });
+  .transform( 'concat', {
+    dest: 'bundle.js',
+    separator: '/* YOLO */'
+  }
+);
 ```
 
 
