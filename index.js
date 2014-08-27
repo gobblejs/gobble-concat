@@ -1,4 +1,4 @@
-module.exports = function concat ( inputDir, outputDir, options, done ) {
+module.exports = function concat ( inputDir, outputDir, options, done, err ) {
 	var gobble = require( 'gobble' );
 
 	if ( !options.dest ) {
@@ -44,5 +44,5 @@ module.exports = function concat ( inputDir, outputDir, options, done ) {
 		function writeResult () {
 			return gobble.file.write( outputDir, options.dest, fileContents.join( options.separator || '\n\n' ) );
 		}
-	}).then( done, done );
+	}).then( done, err );
 };
