@@ -1,17 +1,16 @@
-module.exports = function concat ( inputDir, outputDir, options, done, err ) {
-	var gobble = require( 'gobble' );
+module.exports = function concat ( inputdir, outputdir, options, callback, errback ) {
+	var sander = require( 'sander' );
 
 	if ( !options.dest ) {
 		throw new Error( 'You must pass a \'dest\' option to gobble-concat' );
 	}
 
-	gobble.file.ls( inputDir ).then( function ( allFiles ) {
+	sander.lsr( inputdir ).then( function ( allFiles ) {
 		var mapSeries = require( 'promise-map-series' ),
 			minimatch = require( 'minimatch' ),
 			patterns = options.files,
 			alreadySeen = {},
-			fileContents = [],
-			writeResult;
+			fileContents = [];
 
 		if ( !patterns ) {
 			// use all files
@@ -25,7 +24,10 @@ module.exports = function concat ( inputDir, outputDir, options, done, err ) {
 		return mapSeries( patterns, function ( pattern ) {
 			var filtered = allFiles.filter( function ( filename ) {
 				var shouldInclude = !alreadySeen[ filename ] && minimatch( filename, pattern );
-				alreadySeen[ filename ] = true;
+
+				if ( shouldInclude ) {
+					alreadySeen[ filename ] = true;
+				}
 
 				return shouldInclude;
 			});
@@ -35,14 +37,14 @@ module.exports = function concat ( inputDir, outputDir, options, done, err ) {
 
 		function processFiles ( filenames ) {
 			return mapSeries( filenames.sort( options.sort ), function ( filename ) {
-				return gobble.file.read( inputDir, filename ).then( function ( contents ) {
+				return sander.readFile( inputdir, filename ).then( function ( contents ) {
 					fileContents.push( contents.toString() );
 				});
 			});
 		}
 
 		function writeResult () {
-			return gobble.file.write( outputDir, options.dest, fileContents.join( options.separator || '\n\n' ) );
+			return sander.writeFile( outputdir, options.dest, fileContents.join( options.separator || '\n\n' ) );
 		}
-	}).then( done, err );
+	}).then( callback, errback );
 };
