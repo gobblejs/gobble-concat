@@ -1,7 +1,7 @@
 {
   "name": "gobble-concat",
   "description": "Concatenate files with gobble",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "author": "Rich Harris",
   "repository": "https://github.com/gobblejs/gobble-concat",
   "files": [

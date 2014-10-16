@@ -1,11 +1,11 @@
-module.exports = function concat ( inputdir, outputdir, options, callback, errback ) {
+module.exports = function concat ( inputdir, outputdir, options ) {
 	var sander = require( 'sander' );
 
 	if ( !options.dest ) {
 		throw new Error( 'You must pass a \'dest\' option to gobble-concat' );
 	}
 
-	sander.lsr( inputdir ).then( function ( allFiles ) {
+	return sander.lsr( inputdir ).then( function ( allFiles ) {
 		var mapSeries = require( 'promise-map-series' ),
 			minimatch = require( 'minimatch' ),
 			patterns = options.files,
@@ -46,5 +46,5 @@ module.exports = function concat ( inputdir, outputdir, options, callback, errba
 		function writeResult () {
 			return sander.writeFile( outputdir, options.dest, fileContents.join( options.separator || '\n\n' ) );
 		}
-	}).then( callback, errback );
+	});
 };
