@@ -8,7 +8,7 @@
     "index.js"
   ],
   "keywords": [
-    "gobble"
+    "gobble-plugin"
   ],
   "dependencies": {
     "minimatch": "~1.0.0",
