@@ -1,5 +1,9 @@
 # changelog
 
+## 0.4.1
+
+* Use `/*# */` comments in CSS files (instead of `//#`)
+
 ## 0.4.0
 
 * Handle sourcemaps
