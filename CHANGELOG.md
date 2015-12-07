@@ -1,5 +1,9 @@
 # changelog
 
+## 0.4.2
+
+* Fixed ident sourcemap generation (for files without one)
+
 ## 0.4.1
 
 * Use `/*# */` comments in CSS files (instead of `//#`)

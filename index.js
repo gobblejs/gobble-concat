@@ -53,19 +53,24 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 
 					/// Run a regexp against the code to check for source mappings.
 					var match = sourceMapRegExp.exec(fileContents);
+					fileContents = fileContents.toString();
 
 					if (!match) {
 // 						if (options.verbose)	console.log('Creating ident sourcemap for ', filename);
-						var newNode = new SourceNode(1, 1, filename, fileContents.toString());
-						newNode.setSourceContent(filename, fileContents.toString());
-						nodes.push( newNode );
+						var lines = fileContents.split('\n');
+						var lineCount = lines.length;
+						for (var i=0; i<lineCount; i++) {
+							var newNode = new SourceNode(i+1, 1, filename, lines[i]);
+							newNode.setSourceContent(filename, fileContents);
+							nodes.push( newNode );
+						}
 					} else {
 						var sourcemapFilename = match[1];
 
 						return sander.readFile( inputdir, path.dirname(filename), sourcemapFilename ).then( function ( mapContents ) {
 							// Sourcemap exists
 							var parsedMap = new SourceMapConsumer( mapContents.toString() );
-							nodes.push( SourceNode.fromStringWithSourceMap( fileContents.toString(), parsedMap ) );
+							nodes.push( SourceNode.fromStringWithSourceMap( fileContents, parsedMap ) );
 // 							if (options.verbose) console.log('Loaded sourcemap for ', filename + ': ' + sourcemapFilename + "(" + mapContents.length + " bytes)");
 						}, function(err) {
 							throw new Error('File ' + inputdir + ' / ' + filename + ' refers to a non-existing sourcemap at ' + sourcemapFilename + ' ' + err);
