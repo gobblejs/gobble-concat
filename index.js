@@ -81,9 +81,14 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 				return sander.writeFile( outputdir, options.dest, '' );
 			}
 
+			var dest = new SourceNode(null, null, null, '');
+
+			if ( options.banner ) {
+				dest.add( new SourceNode(null, null, null, options.banner) );
+			}
+
 			var separatorNode = new SourceNode(null, null, null, options.separator || '\n\n');
 
-			var dest = new SourceNode(null, null, null, '');
 			dest.add(nodes[0]);
 
 			for (var i=1; i<nodes.length; i++) {
