@@ -59,11 +59,17 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 // 						if (options.verbose)	console.log('Creating ident sourcemap for ', filename);
 						var lines = fileContents.split('\n');
 						var lineCount = lines.length;
+						var identNode = new SourceNode(null, null, null, '');
+						var newLineNode = new SourceNode(null, null, null, '\n');
+
+						identNode.setSourceContent(filename, fileContents);
+
 						for (var i=0; i<lineCount; i++) {
-							var newNode = new SourceNode(i+1, 1, filename, lines[i]);
-							newNode.setSourceContent(filename, fileContents);
-							nodes.push( newNode );
+							var lineNode = new SourceNode(i+1, 1, filename, lines[i]);
+							if (i) { identNode.add(newLineNode); }
+							identNode.add(lineNode);
 						}
+						nodes.push( identNode );
 					} else {
 						var sourcemapFilename = match[1];
 
