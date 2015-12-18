@@ -1,7 +1,7 @@
 {
   "name": "gobble-concat",
   "description": "Concatenate files with gobble",
-  "version": "0.4.0",
+  "version": "0.4.3",
   "authors": [
     "Rich Harris",
     "Iván Sánchez Ortega <ivan@sanchezortega.es>"

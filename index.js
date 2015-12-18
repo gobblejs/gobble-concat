@@ -5,7 +5,7 @@ var sander = require( 'sander' ),
 var SourceNode = require( 'source-map' ).SourceNode;
 var SourceMapConsumer = require( 'source-map' ).SourceMapConsumer;
 
-var sourceMapRegExp = new RegExp(/(?:\/\/#|\/\/@|\/\*#)\s*sourceMappingURL=(.*)\s*(?:\*\/\s*)?$/);
+var sourceMapRegExp = new RegExp(/(?:\/\/#|\/\/@|\/\*#)\s*sourceMappingURL=(\S*)\s*(?:\*\/\s*)?$/);
 var extensionsRegExp = new RegExp(/(\.js|\.css)$/);
 
 module.exports = function concat ( inputdir, outputdir, options ) {
@@ -53,19 +53,30 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 
 					/// Run a regexp against the code to check for source mappings.
 					var match = sourceMapRegExp.exec(fileContents);
+					fileContents = fileContents.toString();
 
 					if (!match) {
 // 						if (options.verbose)	console.log('Creating ident sourcemap for ', filename);
-						var newNode = new SourceNode(1, 1, filename, fileContents.toString());
-						newNode.setSourceContent(filename, fileContents.toString());
-						nodes.push( newNode );
+						var lines = fileContents.split('\n');
+						var lineCount = lines.length;
+						var identNode = new SourceNode(null, null, null, '');
+						var newLineNode = new SourceNode(null, null, null, '\n');
+
+						identNode.setSourceContent(filename, fileContents);
+
+						for (var i=0; i<lineCount; i++) {
+							var lineNode = new SourceNode(i+1, 1, filename, lines[i]);
+							if (i) { identNode.add(newLineNode); }
+							identNode.add(lineNode);
+						}
+						nodes.push( identNode );
 					} else {
 						var sourcemapFilename = match[1];
 
 						return sander.readFile( inputdir, path.dirname(filename), sourcemapFilename ).then( function ( mapContents ) {
 							// Sourcemap exists
 							var parsedMap = new SourceMapConsumer( mapContents.toString() );
-							nodes.push( SourceNode.fromStringWithSourceMap( fileContents.toString(), parsedMap ) );
+							nodes.push( SourceNode.fromStringWithSourceMap( fileContents, parsedMap ) );
 // 							if (options.verbose) console.log('Loaded sourcemap for ', filename + ': ' + sourcemapFilename + "(" + mapContents.length + " bytes)");
 						}, function(err) {
 							throw new Error('File ' + inputdir + ' / ' + filename + ' refers to a non-existing sourcemap at ' + sourcemapFilename + ' ' + err);
@@ -93,7 +104,12 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 			var generated = dest.toStringWithSourceMap();
 
 			if ( options.writeSourcemap ) {
-				var sourceMapLocation = '\n\n//# sourceMappingURL=' + path.join(outputdir, options.dest + '.map') + '\n'
+				var sourceMapLocation;
+				if (options.dest.match(/\.css$/)) {
+					sourceMapLocation = '\n\n/*# sourceMappingURL=' + path.join(outputdir, options.dest + '.map') + ' */\n';
+				} else {
+					sourceMapLocation = '\n\n//# sourceMappingURL=' + path.join(outputdir, options.dest + '.map') + '\n'
+				}
 
 				return sander.Promise.all([
 					sander.writeFile( outputdir, options.dest, generated.code + sourceMapLocation ),
