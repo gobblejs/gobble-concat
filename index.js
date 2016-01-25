@@ -7,6 +7,7 @@ var SourceMapConsumer = require( 'source-map' ).SourceMapConsumer;
 
 var sourceMapRegExp = new RegExp(/(?:\/\/#|\/\/@|\/\*#)\s*sourceMappingURL=(\S*)\s*(?:\*\/\s*)?$/);
 var extensionsRegExp = new RegExp(/(\.js|\.css)$/);
+var dataUriRegexp = new RegExp(/^(data:)([\w\/\+]+);(charset=[\w-]+|base64).*,(.*)/gi);	// From https://github.com/ragingwind/data-uri-regex
 
 module.exports = function concat ( inputdir, outputdir, options ) {
 
@@ -50,7 +51,6 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 		function processFiles ( filenames ) {
 			return mapSeries( filenames.sort( options.sort ), function ( filename ) {
 				return sander.readFile( inputdir, filename ).then( function ( fileContents ) {
-
 					/// Run a regexp against the code to check for source mappings.
 					var match = sourceMapRegExp.exec(fileContents);
 					fileContents = fileContents.toString();
@@ -72,15 +72,29 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 						nodes.push( identNode );
 					} else {
 						var sourcemapFilename = match[1];
+						var dataUriMatch = dataUriRegexp.exec(match[1]);
 
-						return sander.readFile( inputdir, path.dirname(filename), sourcemapFilename ).then( function ( mapContents ) {
-							// Sourcemap exists
-							var parsedMap = new SourceMapConsumer( mapContents.toString() );
+						if (dataUriMatch) {
+							// Inline sourcemap
+							var data = dataUriMatch[4];
+							if (dataUriMatch[3] === 'base64') {
+								data = Buffer(data, 'base64').toString('ascii');
+							}
+
+							var parsedMap = new SourceMapConsumer( data.toString() );
 							nodes.push( SourceNode.fromStringWithSourceMap( fileContents, parsedMap ) );
-// 							if (options.verbose) console.log('Loaded sourcemap for ', filename + ': ' + sourcemapFilename + "(" + mapContents.length + " bytes)");
-						}, function(err) {
-							throw new Error('File ' + inputdir + ' / ' + filename + ' refers to a non-existing sourcemap at ' + sourcemapFilename + ' ' + err);
-						});
+
+						} else {
+							// External sourcemap
+							return sander.readFile( inputdir, path.dirname(filename), sourcemapFilename ).then( function ( mapContents ) {
+								// Sourcemap exists
+								var parsedMap = new SourceMapConsumer( mapContents.toString() );
+								nodes.push( SourceNode.fromStringWithSourceMap( fileContents, parsedMap ) );
+	// 							if (options.verbose) console.log('Loaded sourcemap for ', filename + ': ' + sourcemapFilename + "(" + mapContents.length + " bytes)");
+							}, function(err) {
+								throw new Error('File ' + inputdir + ' / ' + filename + ' refers to a non-existing sourcemap at ' + sourcemapFilename + ' ' + err);
+							});
+						}
 					}
 				});
 			});

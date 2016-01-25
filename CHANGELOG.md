@@ -3,6 +3,7 @@
 ## 0.4.3
 
 * Fixed extra newlines on ident sourcemap generation
+* Ability to handle inline sourcemaps (e.g. from gobble-postcss)
 
 ## 0.4.2
 
