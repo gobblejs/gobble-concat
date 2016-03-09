@@ -1,5 +1,23 @@
 # changelog
 
+## 0.4.4
+
+* Resolve symlink names for ident sourcemap generation
+* Improved edge cases of inlined sourcemaps
+
+## 0.4.3
+
+* Fixed extra newlines on ident sourcemap generation
+* Ability to handle inline sourcemaps (e.g. from gobble-postcss)
+
+## 0.4.2
+
+* Fixed ident sourcemap generation (for files without one)
+
+## 0.4.1
+
+* Use `/*# */` comments in CSS files (instead of `//#`)
+
 ## 0.4.0
 
 * Handle sourcemaps
