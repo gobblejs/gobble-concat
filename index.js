@@ -7,7 +7,7 @@ var SourceMapConsumer = require( 'source-map' ).SourceMapConsumer;
 
 var sourceMapRegExp = new RegExp(/(?:\/\/#|\/\/@|\/\*#)\s*sourceMappingURL=(\S*)\s*(?:\*\/\s*)?$/);
 var extensionsRegExp = new RegExp(/(\.js|\.css)$/);
-var dataUriRegexp = new RegExp(/^(data:)([\w\/\+]+);(charset=[\w-]+|base64).*,(.*)/gi);	// From https://github.com/ragingwind/data-uri-regex
+var dataUriRegexp = new RegExp(/^(data:)([\w\/\+]+)(;charset[=:][\w-]+)?(;base64)?,(.*)/);	// From https://github.com/ragingwind/data-uri-regex, modified
 
 module.exports = function concat ( inputdir, outputdir, options ) {
 
@@ -73,14 +73,12 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 					} else {
 						var sourcemapFilename = match[1];
 						var dataUriMatch = dataUriRegexp.exec(match[1]);
-
 						if (dataUriMatch) {
 							// Inline sourcemap
-							var data = dataUriMatch[4];
-							if (dataUriMatch[3] === 'base64') {
+							var data = dataUriMatch[5];
+							if (dataUriMatch[4] === ';base64') {
 								data = Buffer(data, 'base64').toString('ascii');
 							}
-
 							var parsedMap = new SourceMapConsumer( data.toString() );
 							nodes.push( SourceNode.fromStringWithSourceMap( fileContents, parsedMap ) );
 
