@@ -1,5 +1,10 @@
 # changelog
 
+## 0.4.4
+
+* Resolve symlink names for ident sourcemap generation
+* Improved edge cases of inlined sourcemaps
+
 ## 0.4.3
 
 * Fixed extra newlines on ident sourcemap generation

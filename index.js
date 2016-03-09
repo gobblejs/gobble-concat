@@ -55,32 +55,40 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 					var match = sourceMapRegExp.exec(fileContents);
 					fileContents = fileContents.toString();
 
+					realFilename = sander.realpathSync(inputdir, filename);
+
 					if (!match) {
 // 						if (options.verbose)	console.log('Creating ident sourcemap for ', filename);
+
+// 						console.log('gobble-concat: Creating ident sourcemap for ', filename, ' which is really ', realFilename);
 						var lines = fileContents.split('\n');
 						var lineCount = lines.length;
 						var identNode = new SourceNode(null, null, null, '');
-						var newLineNode = new SourceNode(null, null, null, '\n');
+// 						var newLineNode = new SourceNode(null, null, null, '\n');
 
 						identNode.setSourceContent(filename, fileContents);
 
 						for (var i=0; i<lineCount; i++) {
-							var lineNode = new SourceNode(i+1, 1, filename, lines[i]);
-							if (i) { identNode.add(newLineNode); }
+							var lineNode = new SourceNode(i+1, 0, realFilename, lines[i] + '\n');
+// 							if (i) { identNode.add(newLineNode); }
 							identNode.add(lineNode);
 						}
 						nodes.push( identNode );
 					} else {
+						fileContents = fileContents.replace(sourceMapRegExp, '');
 						var sourcemapFilename = match[1];
 						var dataUriMatch = dataUriRegexp.exec(match[1]);
 						if (dataUriMatch) {
 							// Inline sourcemap
 							var data = dataUriMatch[5];
 							if (dataUriMatch[4] === ';base64') {
-								data = Buffer(data, 'base64').toString('ascii');
+								data = Buffer(data, 'base64').toString('utf8');
 							}
+
 							var parsedMap = new SourceMapConsumer( data.toString() );
+
 							nodes.push( SourceNode.fromStringWithSourceMap( fileContents, parsedMap ) );
+// 							console.log('gobble-concat: Loaded inline sourcemap for ', filename + ": (" + data.length + " bytes)");
 
 						} else {
 							// External sourcemap
@@ -88,7 +96,8 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 								// Sourcemap exists
 								var parsedMap = new SourceMapConsumer( mapContents.toString() );
 								nodes.push( SourceNode.fromStringWithSourceMap( fileContents, parsedMap ) );
-	// 							if (options.verbose) console.log('Loaded sourcemap for ', filename + ': ' + sourcemapFilename + "(" + mapContents.length + " bytes)");
+	// 							if (options.verbose)
+// 								console.log('gobble-concat: Loaded sourcemap for ', filename + ': ' + sourcemapFilename + "(" + mapContents.length + " bytes)");
 							}, function(err) {
 								throw new Error('File ' + inputdir + ' / ' + filename + ' refers to a non-existing sourcemap at ' + sourcemapFilename + ' ' + err);
 							});
