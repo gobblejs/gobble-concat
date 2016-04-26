@@ -1,5 +1,13 @@
 # changelog
 
+## 0.5.0
+
+* Removed `sort` option in favour of ordered minimatch pattern handling via sandermatch
+* Handle symlinks in sourcemaps
+* Correctly handle newlines in identity sourcemaps
+* Ability to handle inline sourcemaps (e.g. from gobble-postcss)
+* Use `/*# */` sourcemap comments in CSS files (instead of `//#`)
+
 ## 0.4.0
 
 * Handle sourcemaps

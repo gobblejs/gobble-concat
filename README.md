@@ -19,7 +19,7 @@ var gobble = require( 'gobble' );
 module.exports = gobble( 'js' ).transform( 'concat', { dest: 'bundle.js' });
 ```
 
-The `dest` property is required. Other values - `files`, `sort`, `separator` and `writeSourcemap`, explained below - are optional.
+The `dest` option is required. Other options - `files`, `separator` and `writeSourcemap`, explained below - are optional.
 
 ### `files`
 
@@ -45,11 +45,7 @@ module.exports = gobble( 'js' )
   });
 ```
 
-### `sort`
-
-Within each pattern, if multiple files are found, they will be sorted alphabetically by default. You can override this by passing a `sort` option, which is a standard [compare function](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)].
-
-If files match multiple patterns, they will only be included once (upon the first match).
+If a file matches more than one minimatch pattern, only its first appearance is taken into account. The order of the patterns will decide the order of the files (in the previous example, all the `vendor/` files will appear before any `src` files).
 
 ### `separator`
 

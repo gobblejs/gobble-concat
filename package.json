@@ -1,7 +1,7 @@
 {
   "name": "gobble-concat",
   "description": "Concatenate files with gobble",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "authors": [
     "Rich Harris",
     "Iván Sánchez Ortega <ivan@sanchezortega.es>"
@@ -9,15 +9,16 @@
   "license": "MIT",
   "repository": "https://github.com/gobblejs/gobble-concat",
   "files": [
-    "index.js"
+    "gobble-concat.js"
   ],
+  "main": "gobble-concat.js",
   "keywords": [
     "gobble-plugin"
   ],
   "dependencies": {
-    "minimatch": "~1.0.0",
     "promise-map-series": "~0.2.0",
     "sander": "^0.1.6",
+    "sandermatch": "^0.1.4",
     "source-map": "^0.5.3"
   }
 }
