@@ -19,7 +19,7 @@ var gobble = require( 'gobble' );
 module.exports = gobble( 'js' ).transform( 'concat', { dest: 'bundle.js' });
 ```
 
-The `dest` property is required. Other values - `files`, `sort`, `separator` and `writeSourcemap`, explained below - are optional.
+The `dest` property is required. Other values - `files`, `sort` and `separator`, explained below - are optional.
 
 ### `files`
 
@@ -63,12 +63,6 @@ module.exports = gobble( 'js' )
     separator: '/* YOLO */'
   });
 ```
-
-### `writeSourcemap`
-
-Concatenating javascript or CSS files requires some extra handling of their sourcemaps, specially in complex workflows. With this option set to `true`, the sourcemaps of the files to be concatenated will be parsed, files with no sourcemap will be assigned an identity (1:1) sourcemap, and a new sourcemap will be generated from all of them.
-
-The default value is `true` when `dest` is a file with a `.js` or `.css` extension, and `false` otherwise.
 
 
 ## License

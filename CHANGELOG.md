@@ -1,5 +1,9 @@
 # changelog
 
+## 0.5.0
+
+* Ignore input sourcemaps
+
 ## 0.4.0
 
 * Handle sourcemaps

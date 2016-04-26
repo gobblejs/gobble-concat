@@ -1,13 +1,18 @@
 {
   "name": "gobble-concat",
   "description": "Concatenate files with gobble",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "authors": [
     "Rich Harris",
     "Iván Sánchez Ortega <ivan@sanchezortega.es>"
   ],
   "license": "MIT",
   "repository": "https://github.com/gobblejs/gobble-concat",
+  "scripts": {
+    "test": "mocha --compilers js:buble/register",
+    "build": "buble -i src/index.js -o index.js --target node:0.10",
+    "pretest": "npm run build"
+  },
   "files": [
     "index.js"
   ],
@@ -18,6 +23,12 @@
     "minimatch": "~1.0.0",
     "promise-map-series": "~0.2.0",
     "sander": "^0.1.6",
-    "source-map": "^0.5.3"
+    "vlq": "^0.2.1"
+  },
+  "devDependencies": {
+    "buble": "^0.6.2",
+    "glob": "^7.0.3",
+    "mocha": "^2.4.5",
+    "sander": "^0.1.6"
   }
 }
