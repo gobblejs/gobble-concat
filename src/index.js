@@ -19,12 +19,12 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 	const separatorSemis = separator.split( '\n' ).join( ';' )
 
 	return sander.lsr( inputdir ).then( allFiles => {
-		var patterns = options.files;
-		var alreadySeen = {};
-		var fileContents = [];
+		let patterns = options.files;
+		let alreadySeen = {};
+		let fileContents = [];
 
 		if ( shouldCreateSourcemap ) {
-			var sourceMap = {
+			let sourceMap = {
 				version: 3,
 				file: basename( options.dest ),
 				sources: [],
@@ -42,9 +42,9 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 			patterns = [ patterns ];
 		}
 
-		return mapSeries( patterns, function ( pattern ) {
-			var filtered = allFiles.filter( function ( filename ) {
-				var shouldInclude = !alreadySeen[ filename ] && minimatch( filename, pattern );
+		return mapSeries( patterns, pattern => {
+			let filtered = allFiles.filter( filename => {
+				const shouldInclude = !alreadySeen[ filename ] && minimatch( filename, pattern );
 
 				if ( shouldInclude ) alreadySeen[ filename ] = true;
 				return shouldInclude;
@@ -104,7 +104,7 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 		}
 
 		function writeResult () {
-			let code = fileContents.join( options.separator || '\n\n' );
+			let code = fileContents.join( separator );
 
 			if ( shouldCreateSourcemap ) {
 				const comment = getSourcemapComment[ ext ]( basename( options.dest ) );
