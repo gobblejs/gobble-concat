@@ -2,9 +2,9 @@
   "version": 3,
   "file": "bundle.js",
   "sources": [
-    "/Volumes/Storage/www/GOBBLE/plugins/gobble-concat/test/tests/creates-sourcemap-for-js/input/bar.js",
-    "/Volumes/Storage/www/GOBBLE/plugins/gobble-concat/test/tests/creates-sourcemap-for-js/input/baz.js",
-    "/Volumes/Storage/www/GOBBLE/plugins/gobble-concat/test/tests/creates-sourcemap-for-js/input/foo.js"
+    "../input/bar.js",
+    "../input/baz.js",
+    "../input/foo.js"
   ],
   "sourcesContent": [
     "console.log( 'bar' );\n",

@@ -1,0 +1,15 @@
+{
+  "version": 3,
+  "file": "bundle.js",
+  "sources": [
+    "../input/bar.js",
+    "../input/baz.js",
+    "../input/foo.js"
+  ],
+  "sourcesContent": [
+    "console.log( 'bar' );\n//# sourceMappingURL=one.js.map\n",
+    "console.log( 'baz' );\n//# sourceMappingURL=two.js.map\n",
+    "console.log( 'foo' );\n//# sourceMappingURL=three.js.map\n"
+  ],
+  "mappings": "AAAA,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;;;;ACDrB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;;;;ACDrB,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC;;;;"
+}

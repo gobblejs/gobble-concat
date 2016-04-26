@@ -29,6 +29,10 @@ describe( 'gobble-concat', () => {
 
 						if ( extname( file ) === '.map' ) {
 							contents = JSON.parse( contents );
+
+							if ( contents.sources ) {
+								contents.sources = contents.sources.map( source => resolve( dir, x, source ) );
+							}
 						}
 
 						return { file, contents };

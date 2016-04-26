@@ -23,15 +23,13 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 		let alreadySeen = {};
 		let fileContents = [];
 
-		if ( shouldCreateSourcemap ) {
-			let sourceMap = {
-				version: 3,
-				file: basename( options.dest ),
-				sources: [],
-				sourcesContent: [],
-				mappings: ''
-			};
-		}
+		let sourceMap = shouldCreateSourcemap ? {
+			version: 3,
+			file: basename( options.dest ),
+			sources: [],
+			sourcesContent: [],
+			mappings: ''
+		} : null;
 
 		if ( !patterns ) {
 			// use all files
@@ -66,6 +64,7 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 						sourceMap.sources.push( join( inputdir, filename ) );
 						sourceMap.sourcesContent.push( contents );
 
+						contents = contents.replace( /^(?:\/\/[@#]\s*sourceMappingURL=(\S+)|\/\*#?\s*sourceMappingURL=(\S+)\s?\*\/)$/gm, '' );
 						const lines = contents.split( '\n' );
 
 						const encoded = lines

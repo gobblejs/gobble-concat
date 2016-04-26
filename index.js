@@ -23,15 +23,13 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 		var alreadySeen = {};
 		var fileContents = [];
 
-		if ( shouldCreateSourcemap ) {
-			var sourceMap = {
-				version: 3,
-				file: basename( options.dest ),
-				sources: [],
-				sourcesContent: [],
-				mappings: ''
-			};
-		}
+		var sourceMap = shouldCreateSourcemap ? {
+			version: 3,
+			file: basename( options.dest ),
+			sources: [],
+			sourcesContent: [],
+			mappings: ''
+		} : null;
 
 		if ( !patterns ) {
 			// use all files
@@ -66,6 +64,7 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 						sourceMap.sources.push( join( inputdir, filename ) );
 						sourceMap.sourcesContent.push( contents );
 
+						contents = contents.replace( /^(?:\/\/[@#]\s*sourceMappingURL=(\S+)|\/\*#?\s*sourceMappingURL=(\S+)\s?\*\/)$/gm, '' );
 						var lines = contents.split( '\n' );
 
 						var encoded = lines
@@ -104,7 +103,7 @@ module.exports = function concat ( inputdir, outputdir, options ) {
 		}
 
 		function writeResult () {
-			var code = fileContents.join( options.separator || '\n\n' );
+			var code = fileContents.join( separator );
 
 			if ( shouldCreateSourcemap ) {
 				var comment = getSourcemapComment[ ext ]( basename( options.dest ) );
