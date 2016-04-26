@@ -1,5 +1,5 @@
 const assert = require( 'assert' );
-const { resolve } = require( 'path' );
+const { extname, resolve } = require( 'path' );
 const { lsrSync, mkdir, mkdirSync, readdirSync, readFileSync, rimraf } = require( 'sander' );
 const { describe, it, afterEach } = require( 'mocha' );
 const glob = require( 'glob' );
@@ -25,10 +25,13 @@ describe( 'gobble-concat', () => {
 			function catalogue ( x ) {
 				return glob.sync( '**', { cwd: x })
 					.map( file => {
-						return {
-							file,
-							contents: readFileSync( TESTS, dir, x, file, { encoding: 'utf-8' })
-						};
+						let contents = readFileSync( TESTS, dir, x, file, { encoding: 'utf-8' }).trim();
+
+						if ( extname( file ) === '.map' ) {
+							contents = JSON.parse( contents );
+						}
+
+						return { file, contents };
 					});
 			}
 

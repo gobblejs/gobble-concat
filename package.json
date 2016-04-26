@@ -6,7 +6,9 @@
   "license": "MIT",
   "repository": "https://github.com/gobblejs/gobble-concat",
   "scripts": {
-    "test": "mocha --compilers js:buble/register"
+    "test": "mocha --compilers js:buble/register",
+    "build": "buble -i src/index.js -o index.js --target node:0.10",
+    "pretest": "npm run build"
   },
   "files": [
     "index.js"
@@ -17,7 +19,8 @@
   "dependencies": {
     "minimatch": "~1.0.0",
     "promise-map-series": "~0.2.0",
-    "sander": "^0.1.6"
+    "sander": "^0.1.6",
+    "vlq": "^0.2.1"
   },
   "devDependencies": {
     "buble": "^0.6.2",

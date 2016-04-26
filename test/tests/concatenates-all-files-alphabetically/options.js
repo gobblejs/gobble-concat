@@ -1,3 +1,4 @@
 module.exports = {
-	dest: 'bundle.js'
+	dest: 'bundle.js',
+	sourceMap: false
 };
