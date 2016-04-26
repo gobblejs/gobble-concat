@@ -1,9 +1,5 @@
 # changelog
 
-## 0.4.0
-
-* Handle sourcemaps
-
 ## 0.3.0
 
 * Update to 0.6.x API
