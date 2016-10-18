@@ -1,5 +1,9 @@
 # changelog
 
+## 0.4.1
+
+* Fixed a bug when parsing locations of CSS sourcemaps (thanks @cameron-martin)
+
 ## 0.4.0
 
 * Handle sourcemaps
