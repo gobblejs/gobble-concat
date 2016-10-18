@@ -5,7 +5,7 @@ var sander = require( 'sander' ),
 var SourceNode = require( 'source-map' ).SourceNode;
 var SourceMapConsumer = require( 'source-map' ).SourceMapConsumer;
 
-var sourceMapRegExp = new RegExp(/(?:\/\/#|\/\/@|\/\*#)\s*sourceMappingURL=(.*)\s*(?:\*\/\s*)?$/);
+var sourceMapRegExp = new RegExp(/(?:\/\/#|\/\/@|\/\*#)\s*sourceMappingURL=(.*?)\s*(?:\*\/\s*)?$/);
 var extensionsRegExp = new RegExp(/(\.js|\.css)$/);
 
 module.exports = function concat ( inputdir, outputdir, options ) {
